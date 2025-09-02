@@ -1,4 +1,6 @@
 
+import 'package:dar_nashr/pages/Jobs/job_opportunities.dart';
+import 'package:dar_nashr/pages/profile/ProfilePage.dart';
 import 'package:flutter/material.dart';
 import 'package:dar_nashr/core/resources/color.dart';
 import 'package:dar_nashr/pages/homepages/home_page.dart';
@@ -15,10 +17,10 @@ class _MainNavigationPageState extends State<MainNavigationPage> {
 
   final List<Widget> _pages = const [
     HomePage(),
+    JobOpportunitiesPage(), 
     Placeholder(), 
     Placeholder(), 
-    Placeholder(), 
-    Placeholder(), 
+   ProfilePage(), 
   ];
 
   void _onItemTapped(int index) {

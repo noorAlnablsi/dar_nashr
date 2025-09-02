@@ -1,40 +1,61 @@
 
 
 
+
+import 'package:dar_nashr/models/quote_model.dart';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class AddQuoteService {
-  final Dio _dio = Dio();
-  final String _baseUrl = 'https://project2copyrepo-8.onrender.com';
+class QuoteService {
+  final Dio _dio = Dio(
+    BaseOptions(baseUrl: "https://project2copyrepo-12.onrender.com/"),
+  );
 
-  Future<bool> addQuote({
-    required String text,
-    required int bookId,
-  }) async {
+  Future<List<Quote>> getQuotes({int skip = 0, int limit = 12}) async {
     try {
-      final response = await _dio.post(
-        '$_baseUrl/quotes/',
+      final response = await _dio.get(
+        "/quotes/",
+        queryParameters: {"skip": skip, "limit": limit},
+      );
+
+      List data = response.data;
+      return data.map((e) => Quote.fromJson(e)).toList();
+    } catch (e) {
+      throw Exception("فشل في جلب الاقتباسات: $e");
+    }
+  }
+
+ 
+  Future<void> addQuote({
+    required String text,
+    required String bookName,
+    String? authorName,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('access_token');
+
+    if (token == null) {
+      throw Exception("لا يوجد توكن. الرجاء تسجيل الدخول أولاً.");
+    }
+
+    try {
+      await _dio.post(
+        "/quotes/",
         data: {
-          'text': text,
-          'book_id': bookId,
+          "text": text,
+          "book_name": bookName,
+          "author_name": authorName,
         },
         options: Options(
           headers: {
-            'accept': 'application/json',
+            'Authorization': 'Bearer $token',
             'Content-Type': 'application/json',
           },
         ),
       );
-
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        return true;
-      } else {
-        print("فشل في الإضافة: ${response.statusCode}");
-        return false;
-      }
     } catch (e) {
-      print("خطأ في Dio: $e");
-      return false;
+      print(e);
+      throw Exception("فشل في إضافة الاقتباس: $e");
     }
   }
 }

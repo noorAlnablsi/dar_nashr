@@ -1,62 +1,9 @@
-// import 'package:flutter/material.dart';
-
-// class QuoteCard extends StatelessWidget {
-//   final String quoteText;
-//   final String authorName;
-//   const QuoteCard({
-//     super.key,
-//     required this.quoteText,
-//     required this.authorName,
-//   });
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 220,
-//       padding: const EdgeInsets.all(12),
-//       decoration: BoxDecoration(
-//         color: const Color(0xffE1D4B7),
-//         borderRadius: BorderRadius.circular(16),
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Expanded(
-//             child: Text(
-//               quoteText,
-//               style: const TextStyle(
-//                 fontWeight: FontWeight.bold,
-//                 fontSize: 14,
-//                 height: 1.3,
-//                 color: Color(0xff1D2A45),
-//               ),
-//               maxLines: 3,
-//               overflow: TextOverflow.ellipsis,
-//             ),
-//           ),
-//           const SizedBox(height: 8),
-//           Text(
-//             authorName,
-//             style: const TextStyle(
-//               fontSize: 12,
-//               fontWeight: FontWeight.w600,
-//               color: Color(0xff731F28),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-
-
 import 'package:flutter/material.dart';
 
 class QuoteCard extends StatelessWidget {
   final String quoteText;
   final String authorName;
-  final String addedBy; // اسم الشخص يلي أضاف الاقتباس
+  final String addedBy; 
 
   const QuoteCard({
     super.key,
@@ -77,17 +24,18 @@ class QuoteCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ✅ أيقونة الإعجاب عاليمين
+          
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Text(
-            addedBy,
-            style: const TextStyle(
-              fontSize: 10,
-              fontWeight: FontWeight.w400,
-              color: Color(0xff1D2A45),
-            ),
-          ),
+            children: [
+              Text(
+                addedBy,
+                style: const TextStyle(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w400,
+                  color: Color(0xff1D2A45),
+                ),
+              ),
               IconButton(
                 icon: const Icon(
                   Icons.favorite_border,
@@ -97,18 +45,16 @@ class QuoteCard extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 constraints: const BoxConstraints(),
                 onPressed: () {
-                  // الأكشن لو حابة
+                  
                 },
               ),
-              
             ],
           ),
 
-          // ✅ اسم الشخص يلي أضاف الاقتباس
           
+
           const SizedBox(height: 9),
 
-          // ✅ نص الاقتباس
           Text(
             quoteText,
             style: const TextStyle(
@@ -123,7 +69,6 @@ class QuoteCard extends StatelessWidget {
 
           const SizedBox(height: 12),
 
-          // ✅ اسم الكاتب الأصلي
           Text(
             authorName,
             style: const TextStyle(
@@ -137,4 +82,3 @@ class QuoteCard extends StatelessWidget {
     );
   }
 }
-

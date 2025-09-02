@@ -1,11 +1,67 @@
+import 'package:dar_nashr/services/add_book_fav.dart';
 import 'package:flutter/material.dart';
 
-class BookCard extends StatelessWidget {
+class BookCard extends StatefulWidget {
+  final int bookId;
   final String title;
-  const BookCard({super.key, required this.title});
+  final String publisherName;
+  final String? coverUrl;
+
+  const BookCard({
+    super.key,
+    required this.bookId,
+    required this.title,
+    required this.publisherName,
+    this.coverUrl,
+  });
+
+  @override
+  State<BookCard> createState() => _BookCardState();
+}
+
+class _BookCardState extends State<BookCard> {
+  bool isFav = false;
+  final BookService _bookService = BookService();
+
+  Future<void> _toggleFavorite() async {
+    try {
+      final success = await _bookService.toggleFavorite(widget.bookId);
+
+      if (success) {
+        setState(() {
+          isFav = !isFav;
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              isFav
+                  ? "تمت الإضافة إلى المفضلة "
+                  : "تمت الإزالة من المفضلة ",
+            ),
+            backgroundColor: isFav ? Colors.green : Colors.red,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint("Error: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("حصل خطأ أثناء الإضافة للمفضلة"),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    String? resolvedCover = widget.coverUrl;
+    if (resolvedCover != null && resolvedCover.startsWith('/')) {
+      resolvedCover = 'https://project2copyrepo-12.onrender.com$resolvedCover';
+    }
+
     return Container(
       width: 140,
       decoration: BoxDecoration(
@@ -22,17 +78,56 @@ class BookCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+       
           Expanded(
             flex: 7,
-            child: ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-              child: Image.asset(
-                'images/غلاف الكتاب.png',
-                fit: BoxFit.cover,
-                width: double.infinity,
-              ),
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius:
+                      const BorderRadius.vertical(top: Radius.circular(12)),
+                  child: resolvedCover != null && resolvedCover.isNotEmpty
+                      ? Image.network(
+                          resolvedCover,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          errorBuilder: (_, __, ___) => Image.asset(
+                            'images/غلاف الكتاب.png',
+                            fit: BoxFit.cover,
+                            width: double.infinity,
+                          ),
+                        )
+                      : Image.asset(
+                          'images/غلاف الكتاب.png',
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                        ),
+                ),
+             
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: GestureDetector(
+                    onTap: _toggleFavorite,
+                    child: Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.7),
+                        shape: BoxShape.circle,
+                      ),
+                      child: Icon(
+                        isFav ? Icons.favorite : Icons.favorite_border,
+                        color: const Color(0xff731F28),
+                        size: 20,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
+
+          
           Expanded(
             flex: 3,
             child: Padding(
@@ -40,7 +135,7 @@ class BookCard extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    title,
+                    widget.title,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Color(0xff1D2A45),
@@ -51,10 +146,12 @@ class BookCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 4),
-                  const Text(
-                    'دار الفكر',
+                  Text(
+                    widget.publisherName.isEmpty
+                        ? 'غير معروف'
+                        : widget.publisherName,
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       color: Color(0xff731F28),
                       fontSize: 12,
                       fontWeight: FontWeight.w600,

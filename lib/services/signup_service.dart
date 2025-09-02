@@ -10,7 +10,7 @@ class RegisterService {
     required String password,
     required String role,
   }) async {
-    const String url = 'https://project2copyrepo-8.onrender.com/register';
+    const String url = 'https://project2copyrepo-12.onrender.com/register';
 
     final data = {
       "username": username,

@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 class OtpService {
   static Future<bool> sendOtp(String email) async {
     final dio = Dio();
-    final url = 'https://project2copyrepo-8.onrender.com/send-otp';
+    final url = 'https://project2copyrepo-12.onrender.com/send-otp';
 
     try {
       final response = await dio.post(
