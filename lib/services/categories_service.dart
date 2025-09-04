@@ -3,7 +3,7 @@ import 'package:dio/dio.dart';
 class CategoryService {
   final Dio dio = Dio(
     BaseOptions(
-      baseUrl: "https://project2copyrepo-12.onrender.com",
+      baseUrl: "https://project2copyrepo-15.onrender.com",
       connectTimeout: const Duration(seconds: 15),
       receiveTimeout: const Duration(seconds: 15),
     ),

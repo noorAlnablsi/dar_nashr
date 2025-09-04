@@ -36,8 +36,8 @@ class _BookCardState extends State<BookCard> {
           SnackBar(
             content: Text(
               isFav
-                  ? "تمت الإضافة إلى المفضلة "
-                  : "تمت الإزالة من المفضلة ",
+                  ? "تمت الإضافة إلى المفضلة ✅"
+                  : "تمت الإزالة من المفضلة ❌",
             ),
             backgroundColor: isFav ? Colors.green : Colors.red,
             duration: const Duration(seconds: 2),
@@ -78,7 +78,7 @@ class _BookCardState extends State<BookCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-       
+          // ✅ صورة الكتاب + زر Fav
           Expanded(
             flex: 7,
             child: Stack(
@@ -103,7 +103,7 @@ class _BookCardState extends State<BookCard> {
                           width: double.infinity,
                         ),
                 ),
-             
+                // ✅ زر القلب
                 Positioned(
                   top: 8,
                   right: 8,
@@ -127,7 +127,7 @@ class _BookCardState extends State<BookCard> {
             ),
           ),
 
-          
+          // ✅ النصوص
           Expanded(
             flex: 3,
             child: Padding(

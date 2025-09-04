@@ -5,7 +5,7 @@ class VerifyOtpService {
   final Dio _dio = Dio();
 
   Future<bool> verifyOtp({required String email, required String otp}) async {
-    const String url = 'https://project2copyrepo-12.onrender.com/verify-otp';
+    const String url = 'https://project2copyrepo-15.onrender.com/verify-otp';
 
     try {
       Response response = await _dio.post(
